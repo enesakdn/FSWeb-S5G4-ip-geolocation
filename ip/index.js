@@ -1,26 +1,24 @@
-//axios import buraya gelecek
+import axios from "axios";
 
 var benimIP;
-
 
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require("babel-core/register");
 require("babel-polyfill");
-async function ipAdresimiAl(){
-	await axios({
-		method: 'get',
-		url: 'https://apis.ergineer.com/ipadresim',
-	})
-	.then(function (response) {
-		return response.data
-	})
-	.then(function (a) {
-		benimIP=a
-	});
-}				
+async function ipAdresimiAl() {
+  await axios({
+    method: "get",
+    url: "https://apis.ergineer.com/ipadresim",
+  })
+    .then(function (response) {
+      return response.data;
+    })
+    .then(function (a) {
+      benimIP = a;
+    });
+}
 // ------------ değiştirmeyin --------------
-
 
 /*
 	ADIM 1: axios kullanarak, aşağıdaki URL'ye GET sorgusu atacağız
@@ -67,6 +65,64 @@ async function ipAdresimiAl(){
 	Örnek dinamik URL kullanımı: var url = "https://apis.ergineer.com/ipgeoapi/"+benimIP; 
 */
 
-
-
 //kodlar buraya gelecek
+
+let cards = document.querySelector(".cards");
+
+function data(nesne) {
+  const divolustur = document.createElement("div");
+  divolustur.setAttribute("class", "card");
+
+  const imgolustur = document.createElement("img");
+  imgolustur.setAttribute("src", "ülkebayrağı");
+  divolustur.appendChild(imgolustur);
+
+  const div2olustur = document.createElement("div");
+  div2olustur.setAttribute("class", "card-info");
+  divolustur.appendChild(div2olustur);
+
+  const h3olustur = document.createElement("h3");
+  h3olustur.setAttribute("class", "ip");
+  h3olustur.textContent = nesne.sorgu;
+  div2olustur.appendChild(h3olustur);
+
+  const polustur = document.createElement("p");
+  polustur.setAttribute("class", "ulke");
+  polustur.textContent = `${nesne.ülke} (${nesne.ülkeKodu})`;
+  div2olustur.appendChild(polustur);
+
+  const p1olustur = document.createElement("p");
+  p1olustur.textContent = `Enlem: ${nesne.enlem} Boylam: ${nesne.boylam}`;
+  div2olustur.appendChild(p1olustur);
+
+  const p2olustur = document.createElement("p");
+  p2olustur.textContent = `Şehir: ${nesne.şehir}`;
+  div2olustur.appendChild(p2olustur);
+
+  const p3olustur = document.createElement("p");
+  p3olustur.textContent = `Saat dilimi: ${nesne.saatdilimi}`;
+  div2olustur.appendChild(p3olustur);
+
+  const p4olustur = document.createElement("p");
+  p4olustur.textContent = `Para birimi: ${nesne.parabirimi}`;
+  div2olustur.appendChild(p4olustur);
+
+  const p5olustur = document.createElement("p");
+  p5olustur.textContent = `ISP: ${nesne.isp}`;
+  div2olustur.appendChild(p5olustur);
+
+  return divolustur;
+}
+
+//cards.appendChild(data(dummy));
+
+const adim5 = async function () {
+  await ipAdresimiAl();
+  axios
+    .get(`https://apis.ergineer.com/ipgeoapi/${benimIP}`)
+    .then((response) => {
+      cards.appendChild(data(response.data));
+    })
+    .catch((error) => console.log(error));
+};
+adim5();
